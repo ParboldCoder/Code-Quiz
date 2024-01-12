@@ -13,3 +13,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const scoresLink = document.querySelector(".scores a");
 
 }
+
+let currentQuestionIndex = 0;
+  let score = 0;
+  let timeLeft = 60;
+  let timerInterval;
+
+  startButton.addEventListener("click", startQuiz);
+  submitButton.addEventListener("click", saveHighscore);
+  scoresLink.addEventListener("click", viewHighscores);
+
+  function startQuiz() {
+    startScreen.classList.add("hide");
+    quizContainer.classList.remove("hide");
+    shuffleQuestions();
+    displayQuestion();
+    startTimer();
+  }
