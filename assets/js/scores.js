@@ -7,18 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
   
       highscores.forEach((score, index) => {
         const li = document.createElement("li");
-        let scoreString = `${index + 1}. `;
   
-        for (const key in score) {
-          if (score.hasOwnProperty(key)) {
-            scoreString += `${key}: ${score[key]}, `;
-          }
+        if (score.name) {
+          li.textContent = `${index + 1}. ${score.name}: ${score.score}`;
+          highscoresList.appendChild(li);
         }
-  
-        scoreString = scoreString.slice(0, -2);
-  
-        li.textContent = scoreString;
-        highscoresList.appendChild(li);
       });
     }
   
