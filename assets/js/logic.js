@@ -115,6 +115,14 @@ document.addEventListener("DOMContentLoaded", function () {
     displayHighscores();
   }
 
+  function displayHighscores() {
+    const highscoresList = document.getElementById("highscores-list")
+    highscoresList.innerHTML = "";
+
+  const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+  
+  }
+
   function saveHighscore() {
     const initials = initialsInput.value.trim();
 
