@@ -11,9 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const startButton = document.getElementById("start");
   const feedbackContainer = document.getElementById("feedback");
   const scoresLink = document.querySelector(".scores a");
-}
 
-let currentQuestionIndex = 0;
+  let currentQuestionIndex = 0;
   let score = 0;
   let timeLeft = 60;
   let timerInterval;
@@ -29,42 +28,45 @@ let currentQuestionIndex = 0;
     displayQuestion();
     startTimer();
   }
+
   function shuffleQuestions() {
-      questions.sort(() => Math.random() - 0.5);
+    questions.sort(() => Math.random() - 0.5);
   }
-  
+
   function displayQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+
     questionTitle.textContent = currentQuestion.question;
     choicesContainer.innerHTML = "";
-  
+
     if (currentQuestion.isTrueFalse) {
       const trueButton = createChoiceButton("True");
       const falseButton = createChoiceButton("False");
-  
+
       choicesContainer.appendChild(trueButton);
       choicesContainer.appendChild(falseButton);
     } else {
-      
-      currentQuestion.choices.forEach(choice => {
-        const button = createChoiceButton(choices);
+      currentQuestion.choices.forEach((choice) => {
+        const button = createChoiceButton(choice);
         choicesContainer.appendChild(button);
       });
     }
   }
-  
+
   function createChoiceButton(text) {
-   const button = document.createElement("div");
+    const button = document.createElement("div");
     button.textContent = text;
-    button.addEventListener("clck", checkAnswer);
+    button.addEventListener("click", checkAnswer);
     return button;
   }
-  
+
   function checkAnswer(event) {
-    const selectedAnswerText = event.target;
-  
-    if (questions[currentQuestionIndex].isTrueFalse) {
+    const selectedAnswerText = event.target.textContent;
+    const currentQuestion = questions[currentQuestionIndex];
+
+    if (currentQuestion.isTrueFalse) {
       const selectedAnswer = selectedAnswerText === "True";
-      const correctAnswer = questions[currentQuestionIndex].correctAnswer;
+      const correctAnswer = currentQuestion.correctAnswer;
       if (selectedAnswer === correctAnswer) {
         score++;
         showFeedback("Correct!", "correct");
@@ -74,8 +76,8 @@ let currentQuestionIndex = 0;
       }
     } else {
       const selectedAnswer = selectedAnswerText;
-      const correctAnswer = questions[currentQuestionIndex].correctAnswer;
-  
+      const correctAnswer = currentQuestion.correctAnswer;
+
       if (selectedAnswer === correctAnswer) {
         score++;
         showFeedback("Correct!", "correct");
@@ -84,53 +86,58 @@ let currentQuestionIndex = 0;
         showFeedback("Wrong!", "wrong");
       }
     }
-  
+
     currentQuestionIndex++;
-  
+
     if (currentQuestionIndex < questions.length) {
       displayQuestion();
     } else {
       endQuiz();
     }
   }
-  
+
   function showFeedback(message, className) {
-    container.textContent = message;
-    feedbackContainer = `feedback ${className}`;
+    feedbackContainer.textContent = message;
+    feedbackContainer.className = `feedback ${className}`;
     setTimeout(() => {
       feedbackContainer.className = "hide";
     }, 1000);
   }
-  
+
   function startTimer() {
     timerInterval = setInterval(function () {
       timeLeft--;
-      timerDisplay = timeLeft;
-  
+      timerDisplay.textContent = timeLeft;
+
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
         endQuiz();
       }
     }, 1000);
   }
-  
+
   function endQuiz() {
     clearInterval(timerInterval);
-    quizContainer.classList.add("hidden");
-    endScreen.classList.add("hide");
-    finalScore = score;
+    quizContainer.classList.add("hide");
+    endScreen.classList.remove("hide");
+    finalScore.textContent = score;
   }
-  
+
   function saveHighscore() {
     const initials = initialsInput.value.trim();
-  
+
     if (initials !== "") {
-      Save the highscore logic (use localStorage or send to a server)
-      localStorage.setItem("highscore", stringify({ initials, score }));
-      Redirect to highscores.html or display highscores dynamically
+      const currentHighscores =
+        JSON.parse(localStorage.getItem("highscores")) || [];
+
+      const newHighscore = { initials, score };
+      currentHighscores.push(newHighscore);
+      currentHighscores.sort((a, b) => b.score - a.score);
+      currentHighscores.splice(10);
+
+      localStorage.setItem("highscores", JSON.stringify(currentHighscores));
+
+      window.location.href = "highscores.html";
     }
   }
-  
-  function viewHighscores() {
-  }
-  
+});
