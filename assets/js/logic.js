@@ -19,7 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   startButton.addEventListener("click", startQuiz);
   submitButton.addEventListener("click", saveHighscore);
-  scoresLink.addEventListener("click", viewHighscores);
+  scoresLink.addEventListener("click", function () {
+    window.location.href = "highscores.html";
+  });
 
   function startQuiz() {
     startScreen.classList.add("hide");
@@ -40,15 +42,11 @@ document.addEventListener("DOMContentLoaded", function () {
     choicesContainer.innerHTML = "";
 
     if (currentQuestion.isTrueFalse) {
-      const trueButton = createChoiceButton("True");
-      const falseButton = createChoiceButton("False");
-
-      choicesContainer.appendChild(trueButton);
-      choicesContainer.appendChild(falseButton);
+      createChoiceButton("True");
+      createChoiceButton("False");
     } else {
       currentQuestion.choices.forEach((choice) => {
-        const button = createChoiceButton(choice);
-        choicesContainer.appendChild(button);
+        createChoiceButton(choice);
       });
     }
   }
@@ -57,34 +55,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const button = document.createElement("div");
     button.textContent = text;
     button.addEventListener("click", checkAnswer);
-    return button;
+    choicesContainer.appendChild(button);
   }
 
   function checkAnswer(event) {
     const selectedAnswerText = event.target.textContent;
     const currentQuestion = questions[currentQuestionIndex];
 
-    if (currentQuestion.isTrueFalse) {
-      const selectedAnswer = selectedAnswerText === "True";
-      const correctAnswer = currentQuestion.correctAnswer;
-      if (selectedAnswer === correctAnswer) {
-        score++;
-        showFeedback("Correct!", "correct");
-      } else {
-        timeLeft -= 10;
-        showFeedback("Wrong!", "wrong");
-      }
-    } else {
-      const selectedAnswer = selectedAnswerText;
-      const correctAnswer = currentQuestion.correctAnswer;
+    const selectedAnswer =
+      currentQuestion.isTrueFalse
+        ? selectedAnswerText === "True"
+        : selectedAnswerText;
 
-      if (selectedAnswer === correctAnswer) {
-        score++;
-        showFeedback("Correct!", "correct");
-      } else {
-        timeLeft -= 10;
-        showFeedback("Wrong!", "wrong");
-      }
+    const correctAnswer = currentQuestion.correctAnswer;
+
+    if (selectedAnswer === correctAnswer) {
+      score++;
+      showFeedback("Correct!", "correct");
+    } else {
+      timeLeft -= 10;
+      showFeedback("Wrong!", "wrong");
     }
 
     currentQuestionIndex++;

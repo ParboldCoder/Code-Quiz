@@ -1,6 +1,6 @@
 const questions = [
   {
-    question: "In 1983, this groundbreaking arcade game featured had the main protaganist who could rotate the world around him. What is the title of this innovative game?",
+    question: "In 1983, this groundbreaking arcade game featured the main protaganist as someone who could rotate the world around him. What is the title of this innovative game?",
     choices: ["Joust", "Gyruss", "Black Tiger", "Knight Lore"],
     correctAnswer: "Knight Lore"
   },
