@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let timerInterval;
 
   startButton.addEventListener("click", startQuiz);
-  submitButton.addEventListener("click", saveHighscore);
   scoresLink.addEventListener("click", function () {
     window.location.href = "highscores.html";
   });
@@ -111,41 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
     quizContainer.classList.add("hide");
     endScreen.classList.remove("hide");
     finalScore.textContent = score;
-  
-    displayHighscores(); 
-  }
 
-  function displayHighscores() {
-    const highscoresList = document.getElementById("highscores-list")
-    highscoresList.innerHTML = "";
-
-  const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
-
-  highscores.forEach ((entry, index) => {
-    const listItem = document.createElement ("li");
-    listItem.textContent = `${index + 1} ${entry.initials} - ${entry.score}`;
-    highscoresList.appendChild(listItem);
-  })
-
-  }
-
-  function saveHighscore() {
-    const initials = initialsInput.value.trim();
-
-    if (/^[A-Za-z]{3}$/.test(initials)) {
-      const currentHighscores =
-        JSON.parse(localStorage.getItem("highscores")) || [];
-
-      const newHighscore = { initials, score };
-      currentHighscores.push(newHighscore);
-      currentHighscores.sort((a, b) => b.score - a.score);
-      currentHighscores.splice(10);
-
-      localStorage.setItem("highscores", JSON.stringify(currentHighscores));
-
-      window.location.href = "highscores.html";
-    } else {
-      alert("Please enter exactly three letters for initials.");
-    }
+    displayHighscores();
   }
 });
