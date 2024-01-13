@@ -13,7 +13,8 @@ a:hover {
   color: #8570a5;
 }
 
-button {
+button,
+.choices button {
   display: inline-block;
   margin: 5px;
   cursor: pointer;
@@ -26,12 +27,9 @@ button {
   transition: background-color 0.1s;
 }
 
-button:hover {
+button:hover,
+.choices button:hover {
   background-color: #8570a5;
-}
-
-.choices button {
-  display: block;
 }
 
 input[type="text"] {

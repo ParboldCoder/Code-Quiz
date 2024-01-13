@@ -111,12 +111,14 @@ document.addEventListener("DOMContentLoaded", function () {
     quizContainer.classList.add("hide");
     endScreen.classList.remove("hide");
     finalScore.textContent = score;
+
+    displayHighscores();
   }
 
   function saveHighscore() {
     const initials = initialsInput.value.trim();
 
-    if (initials !== "") {
+    if (/^[A-Za-z]{3}$/.test(initials)) {
       const currentHighscores =
         JSON.parse(localStorage.getItem("highscores")) || [];
 
@@ -128,6 +130,8 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.setItem("highscores", JSON.stringify(currentHighscores));
 
       window.location.href = "highscores.html";
+    } else {
+      alert("Please enter exactly three letters for initials.");
     }
   }
 });
