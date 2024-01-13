@@ -111,8 +111,8 @@ document.addEventListener("DOMContentLoaded", function () {
     quizContainer.classList.add("hide");
     endScreen.classList.remove("hide");
     finalScore.textContent = score;
-
-    displayHighscores();
+  
+    displayHighscores(); 
   }
 
   function displayHighscores() {
@@ -120,7 +120,13 @@ document.addEventListener("DOMContentLoaded", function () {
     highscoresList.innerHTML = "";
 
   const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
-  
+
+  highscores.forEach ((entry, index) => {
+    const listItem = document.createElement ("li");
+    listItem.textContent = `${index + 1} ${entry.initials} - ${entry.score}`;
+    highscoresList.appendChild(listItem);
+  })
+
   }
 
   function saveHighscore() {
