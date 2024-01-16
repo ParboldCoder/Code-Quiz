@@ -35,7 +35,7 @@ const questions = [
     correctAnswer: "Q*bert"
   },
   {
-    question: "True or False: 'Ghostbusters: The Video Game' released in 1984, is a text-based adventure game where players take on the role of a Ghostbuster.",
+    question: "True or False: 'Ghostbusters: The Video Game' released in 1984, is a FPS where players take on the role of a Ghostbuster.",
     choices: ["TRUE", "FALSE"],
     correctAnswer: "FALSE"
   },
