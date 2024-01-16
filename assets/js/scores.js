@@ -11,21 +11,41 @@ document.addEventListener("DOMContentLoaded", function () {
         const li = document.createElement("li");
 
         if (score.name) {
-          li.textContent = `${index + 1}. ${score.name}: ${score.score}`;
+          li.textContent = `${index + 1}. ${score.name}: Score - ${score.score}, Time - ${score.time}`;
           highscoresList.appendChild(li);
         }
       });
-    } else {
-      console.error("Element with ID 'highscores' not found.");
     }
   }
 
-  function addHighscore(score) {
-    highscores.push(score);
-    highscores.sort((a, b) => b.score - a.score);
-    highscores = highscores.slice(0, 10);
-    localStorage.setItem("highscores", JSON.stringify(highscores));
-    displayHighscores();
+  function isValidInitials(initials) {
+    return /^[a-zA-Z]{3}$/.test(initials);
+  }
+
+  function addHighscore() {
+    const initialsInput = document.getElementById("initials");
+    const userScore = 42; 
+    const userTime = 100;
+
+    if (initialsInput && isValidInitials(initialsInput.value)) {
+      const score = {
+        name: initialsInput.value.toUpperCase(),
+        score: userScore,
+        time: userTime,
+      };
+
+      highscores.push(score);
+      highscores.sort((a, b) => {
+        if (a.score === b.score) {
+          return a.time - b.time; 
+        }
+        return b.score - a.score;
+      });
+
+      highscores = highscores.slice(0, 10);
+      localStorage.setItem("highscores", JSON.stringify(highscores));
+      displayHighscores();
+    } 
   }
 
   function clearHighscores() {
@@ -37,9 +57,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const clearButton = document.getElementById("clear");
   if (clearButton) {
     clearButton.addEventListener("click", clearHighscores);
-  } else {
-    console.error("Element with ID 'clear' not found.");
   }
+
+  addHighscore();
 
   displayHighscores();
 });

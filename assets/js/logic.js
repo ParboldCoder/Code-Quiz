@@ -18,9 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let timerInterval;
 
   startButton.addEventListener("click", startQuiz);
-  scoresLink.addEventListener("click", function () {
-    window.location.href = "highscores.html";
-  });
+  submitButton.addEventListener("click", saveHighscore);
+  scoresLink.addEventListener("click", viewHighscores);
 
   function startQuiz() {
     startScreen.classList.add("hide");
@@ -36,54 +35,68 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function displayQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
-
+  
     questionTitle.textContent = currentQuestion.question;
     choicesContainer.innerHTML = "";
-
+  
     if (currentQuestion.isTrueFalse) {
-      createChoiceButton("True");
-      createChoiceButton("False");
-    } else {
+      const trueButton = createChoiceButton("True");
+      const falseButton = createChoiceButton("False");
+  
+      choicesContainer.appendChild(trueButton);
+      choicesContainer.appendChild(falseButton);
+    } else if (currentQuestion.choices && currentQuestion.choices.length > 0) {
       currentQuestion.choices.forEach((choice) => {
-        createChoiceButton(choice);
+        const button = createChoiceButton(choice);
+        choicesContainer.appendChild(button);
       });
     }
   }
-
+  
   function createChoiceButton(text) {
-    const button = document.createElement("div");
+    const button = document.createElement("button");
     button.textContent = text;
     button.addEventListener("click", checkAnswer);
     choicesContainer.appendChild(button);
+    return button;
   }
-
+  
   function checkAnswer(event) {
     const selectedAnswerText = event.target.textContent;
     const currentQuestion = questions[currentQuestionIndex];
-
-    const selectedAnswer =
-      currentQuestion.isTrueFalse
-        ? selectedAnswerText === "True"
-        : selectedAnswerText;
-
-    const correctAnswer = currentQuestion.correctAnswer;
-
-    if (selectedAnswer === correctAnswer) {
-      score++;
-      showFeedback("Correct!", "correct");
-    } else {
-      timeLeft -= 10;
-      showFeedback("Wrong!", "wrong");
+  
+    if (currentQuestion.isTrueFalse) {
+      const selectedAnswer = selectedAnswerText === "True";
+      const correctAnswer = currentQuestion.correctAnswer;
+      if (selectedAnswer === correctAnswer) {
+        score++;
+        showFeedback("Correct!", "correct");
+      } else {
+        timeLeft -= 10;
+        showFeedback("Wrong!", "wrong");
+      }
+    } else if (currentQuestion.choices) {
+      const selectedAnswer = selectedAnswerText;
+      const correctAnswer = currentQuestion.correctAnswer;
+  
+      if (selectedAnswer === correctAnswer) {
+        score++;
+        showFeedback("Correct!", "correct");
+      } else {
+        timeLeft -= 10;
+        showFeedback("Wrong!", "wrong");
+      }
     }
-
+  
     currentQuestionIndex++;
-
+  
     if (currentQuestionIndex < questions.length) {
       displayQuestion();
     } else {
       endQuiz();
     }
   }
+  
 
   function showFeedback(message, className) {
     feedbackContainer.textContent = message;
@@ -110,7 +123,26 @@ document.addEventListener("DOMContentLoaded", function () {
     quizContainer.classList.add("hide");
     endScreen.classList.remove("hide");
     finalScore.textContent = score;
+  }
 
-    displayHighscores();
+  function saveHighscore() {
+    const initials = initialsInput.value.trim();
+
+    if (initials !== "") {
+      const currentHighscores =
+        JSON.parse(localStorage.getItem("highscores")) || [];
+
+      const newHighscore = { initials, score };
+      currentHighscores.push(newHighscore);
+      currentHighscores.sort((a, b) => b.score - a.score);
+      currentHighscores.splice(10);
+
+      localStorage.setItem("highscores", JSON.stringify(currentHighscores));
+
+      window.location.href = "highscores.html";
+    }
+  }
+
+  function viewHighscores() {
   }
 });
