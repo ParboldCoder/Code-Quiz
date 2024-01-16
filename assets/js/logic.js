@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const scoresLink = document.querySelector(".scores a");
   
   const correctSound = new Audio("./assets/sfx/correct.wav");
-  const wrongSound = new Audio("./assets/sfx/incorrect.wav");
+  const wrongSound = new Audio("./assets/sfx/incorrect.wav"); //Adding the audio was a learning curve, as I did not include 'new' before the Audio
 
   let currentQuestionIndex = 0;
   let score = 0;
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (initials !== "") {
       const currentHighscores =
-        JSON.parse(localStorage.getItem("highscores")) || [];
+        JSON.parse(localStorage.getItem("highscores")) || []; //Here I'm checking for highscores stored in the browser's local storage. If there are any, I'm using JSON.parse to convert them from a string to a JavaScript object. If there are no highscores or something goes wrong, I'm setting it to an empty array.  
 
       const newHighscore = { initials, score };
       currentHighscores.push(newHighscore);

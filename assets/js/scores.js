@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 console.log(highscores);
   function displayHighscores() {
     const highscoresList = document.getElementById("highscores");
-    //console.log(highscoresList)
+    //console.log(highscoresList) - I used this to test my scores
     if (highscoresList) {
       highscoresList.innerHTML = "";
 

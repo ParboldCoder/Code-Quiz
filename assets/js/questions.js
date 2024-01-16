@@ -52,3 +52,5 @@ const questions = [
 ];
 
 questions.sort(() => Math.random() - 0.5);
+
+//This page was the easiest to build as it is a questions page.
