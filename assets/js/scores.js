@@ -24,9 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function addHighscore() {
     const initialsInput = document.getElementById("initials");
-    const userScore = 42; 
-    const userTime = 100;
-
+  
     if (initialsInput && isValidInitials(initialsInput.value)) {
       const score = {
         name: initialsInput.value.toUpperCase(),
