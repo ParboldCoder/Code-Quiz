@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const startButton = document.getElementById("start");
   const feedbackContainer = document.getElementById("feedback");
   const scoresLink = document.querySelector(".scores a");
+  
+  const correctSound = new Audio("./assets/sfx/correct.wav");
+  const wrongSound = new Audio("./assets/sfx/incorrect.wav");
 
   let currentQuestionIndex = 0;
   let score = 0;
@@ -35,14 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function displayQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
-  
+
     questionTitle.textContent = currentQuestion.question;
     choicesContainer.innerHTML = "";
-  
+
     if (currentQuestion.isTrueFalse) {
       const trueButton = createChoiceButton("True");
       const falseButton = createChoiceButton("False");
-  
+
       choicesContainer.appendChild(trueButton);
       choicesContainer.appendChild(falseButton);
     } else if (currentQuestion.choices && currentQuestion.choices.length > 0) {
@@ -52,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
-  
+
   function createChoiceButton(text) {
     const button = document.createElement("button");
     button.textContent = text;
@@ -60,43 +63,55 @@ document.addEventListener("DOMContentLoaded", function () {
     choicesContainer.appendChild(button);
     return button;
   }
-  
+
   function checkAnswer(event) {
     const selectedAnswerText = event.target.textContent;
     const currentQuestion = questions[currentQuestionIndex];
-  
+
     if (currentQuestion.isTrueFalse) {
       const selectedAnswer = selectedAnswerText === "True";
       const correctAnswer = currentQuestion.correctAnswer;
       if (selectedAnswer === correctAnswer) {
         score++;
         showFeedback("Correct!", "correct");
+        correctSound.play();
       } else {
         timeLeft -= 10;
         showFeedback("Wrong!", "wrong");
+        wrongSound.play();    
       }
     } else if (currentQuestion.choices) {
       const selectedAnswer = selectedAnswerText;
       const correctAnswer = currentQuestion.correctAnswer;
-  
+
       if (selectedAnswer === correctAnswer) {
         score++;
         showFeedback("Correct!", "correct");
+        correctSound.play();
       } else {
         timeLeft -= 10;
         showFeedback("Wrong!", "wrong");
+        wrongSound.play();
       }
     }
-  
+
     currentQuestionIndex++;
-  
+
     if (currentQuestionIndex < questions.length) {
       displayQuestion();
     } else {
       endQuiz();
     }
   }
-  
+
+  function displayImage(imageElement) {
+    if (imageElement && imageElement.classList) {
+      imageElement.classList.remove("hide");
+      setTimeout(() => {
+        imageElement.classList.add("hide");
+      }, 1000);
+    }
+  }
 
   function showFeedback(message, className) {
     feedbackContainer.textContent = message;
