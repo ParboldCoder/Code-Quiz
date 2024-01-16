@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
   let highscores = JSON.parse(localStorage.getItem("highscores")) || [];
-
+console.log(highscores);
   function displayHighscores() {
     const highscoresList = document.getElementById("highscores");
-
+    //console.log(highscoresList)
     if (highscoresList) {
       highscoresList.innerHTML = "";
 
       highscores.forEach((score, index) => {
         const li = document.createElement("li");
-
-        if (score.name) {
-          li.textContent = `${index + 1}. ${score.name}: Score - ${score.score}, Time - ${score.time}`;
+        console.log(score)
+        if (score.initials) {
+          li.textContent = `${score.initials}: Score - ${score.score}`;
           highscoresList.appendChild(li);
         }
       });
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function addHighscore() {
     const initialsInput = document.getElementById("initials");
-  
+  console.log(initialsInput)
     if (initialsInput && isValidInitials(initialsInput.value)) {
       const score = {
         name: initialsInput.value.toUpperCase(),
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     clearButton.addEventListener("click", clearHighscores);
   }
 
-  addHighscore();
+  //addHighscore();
 
   displayHighscores();
 });
